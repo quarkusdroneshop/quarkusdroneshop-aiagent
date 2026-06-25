@@ -1,0 +1,37 @@
+You are implementing an Enterprise AI Agent Platform.
+
+Always read every document under docs/.
+
+Never ignore architecture.
+
+Never implement business logic inside prompts.
+
+Never connect AI directly to PostgreSQL.
+
+Business API is the only entry point.
+
+Every external access shall become a Tool.
+
+All Agents must be reusable.
+
+Every Agent must be stateless.
+
+Workflow must be implemented using LangGraph.
+
+Business APIs shall be implemented using Quarkus.
+
+OpenMetadata is the single source of truth.
+
+Every REST API must expose OpenAPI.
+
+Write unit tests.
+
+Write integration tests.
+
+Deployment target is OpenShift.
+
+Container image must be OCI compliant.
+
+Follow cloud-native principles.
+
+Never generate code outside the defined directory structure.
