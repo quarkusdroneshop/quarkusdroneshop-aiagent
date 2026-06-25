@@ -1,0 +1,20 @@
+This project is NOT a chatbot.
+
+This project is an Enterprise AI Agent Platform
+running on OpenShift AI.
+
+The platform provides reusable AI Agents
+that interact with enterprise systems through
+Tool Calling.
+
+Business logic shall never be implemented
+inside prompts.
+
+Business logic belongs to Business APIs.
+
+Metadata belongs to OpenMetadata.
+
+The AI Agent performs reasoning only.
+
+The platform must support future agents
+without architectural changes.
