@@ -1,0 +1,65 @@
+OpenMetadata Tool
+
+Responsibilities
+
+Search Metadata
+
+Retrieve Schema
+
+Retrieve Business Glossary
+
+Retrieve Domains
+
+Retrieve Validation Rules
+
+--------------------------------
+
+Business Tool
+
+Invoke REST APIs
+
+Customer
+
+Product
+
+BOM
+
+Supplier
+
+Inventory
+
+--------------------------------
+
+OpenShift Tool
+
+Get Pods
+
+Get Logs
+
+Deploy
+
+Restart
+
+Scale
+
+--------------------------------
+
+Git Tool
+
+Clone
+
+Commit
+
+Branch
+
+Search Source
+
+--------------------------------
+
+Filesystem Tool
+
+Read
+
+Write
+
+Search
