@@ -1,0 +1,324 @@
+===============================================================================
+Enterprise AI Agent Platform
+Reference Architecture
+for OpenShift AI
+
+Version 1.0
+
+Chapter 0
+
+Executive Summary
+===============================================================================
+
+1. Introduction
+-------------------------------------------------------------------------------
+
+Artificial Intelligence is rapidly transforming enterprise software.
+
+However, many AI solutions today are implemented as isolated chatbots or
+standalone applications that tightly couple prompts, business logic,
+enterprise data, and system integrations.
+
+Such architectures become difficult to maintain, difficult to govern,
+and difficult to extend across enterprise systems.
+
+Enterprise organizations require a different approach.
+
+AI must become another platform capability rather than another application.
+
+This document defines a reference architecture for building
+Enterprise AI Agent Platforms on Red Hat OpenShift AI.
+
+The architecture separates AI reasoning from business logic,
+metadata management, and enterprise integration,
+allowing organizations to safely introduce AI into existing systems.
+
+The goal is not to build a chatbot.
+
+The goal is to build an extensible enterprise platform
+that enables reusable AI Agents across multiple business domains.
+
+-------------------------------------------------------------------------------
+
+2. Vision
+-------------------------------------------------------------------------------
+
+The platform enables organizations to create reusable AI Agents that
+can interact with enterprise services through standardized Tool Calling.
+
+Each Agent focuses on reasoning.
+
+Business services remain responsible for business logic.
+
+Metadata remains managed by OpenMetadata.
+
+Deployment remains cloud-native through OpenShift.
+
+The platform must support future AI Agents without changing
+the overall architecture.
+
+-------------------------------------------------------------------------------
+
+3. Design Goals
+-------------------------------------------------------------------------------
+
+The reference architecture pursues the following goals.
+
+• AI Native
+
+Artificial Intelligence is treated as a first-class platform capability.
+
+• Cloud Native
+
+Every component is designed for Kubernetes and OpenShift.
+
+• Enterprise Ready
+
+Security, governance, observability and scalability
+are built into the platform.
+
+• Vendor Neutral
+
+The architecture avoids unnecessary vendor lock-in.
+
+Open standards are preferred whenever possible.
+
+• Metadata Driven
+
+Metadata is externalized and managed by OpenMetadata.
+
+AI never owns business metadata.
+
+• Tool First
+
+Every enterprise capability is exposed through Tools.
+
+Agents never communicate directly with enterprise systems.
+
+• API First
+
+Every business capability is exposed as REST APIs.
+
+Business APIs remain independent from AI.
+
+-------------------------------------------------------------------------------
+
+4. Core Principles
+-------------------------------------------------------------------------------
+
+Principle 1
+
+AI performs reasoning.
+
+AI never executes business logic.
+
+-------------------------------------------------------------------------------
+
+Principle 2
+
+Business APIs own business logic.
+
+Business rules are never embedded inside prompts.
+
+-------------------------------------------------------------------------------
+
+Principle 3
+
+Metadata belongs to OpenMetadata.
+
+Metadata is the single source of truth.
+
+-------------------------------------------------------------------------------
+
+Principle 4
+
+Every external capability becomes a Tool.
+
+Agents interact only with Tools.
+
+-------------------------------------------------------------------------------
+
+Principle 5
+
+Agents are stateless.
+
+Conversation state is externalized.
+
+-------------------------------------------------------------------------------
+
+Principle 6
+
+Business services remain independently deployable.
+
+AI shall never require changes to existing services.
+
+-------------------------------------------------------------------------------
+
+Principle 7
+
+OpenShift provides the runtime platform.
+
+Every component is designed for OpenShift.
+
+-------------------------------------------------------------------------------
+
+5. Target Audience
+-------------------------------------------------------------------------------
+
+This document targets the following roles.
+
+Enterprise Architects
+
+AI Architects
+
+Solution Architects
+
+Platform Engineers
+
+OpenShift Engineers
+
+AI Engineers
+
+Quarkus Developers
+
+Platform Administrators
+
+Technical Leads
+
+-------------------------------------------------------------------------------
+
+6. Scope
+-------------------------------------------------------------------------------
+
+Included
+
+OpenShift AI
+
+LangGraph
+
+OpenMetadata
+
+Quarkus
+
+PostgreSQL
+
+Keycloak
+
+OpenTelemetry
+
+Helm
+
+Tekton
+
+vLLM
+
+IBM Granite
+
+Reference Business APIs
+
+Reference AI Agents
+
+Reference Tool Framework
+
+Reference Deployment
+
+Reference Security
+
+Reference Observability
+
+-------------------------------------------------------------------------------
+
+Out of Scope
+
+Custom LLM Training
+
+Model Fine-tuning
+
+GPU Optimization
+
+Data Science Workflows
+
+Model Development Lifecycle
+
+Those topics are intentionally excluded
+to keep this document focused on platform architecture.
+
+-------------------------------------------------------------------------------
+
+7. Reference Implementation
+-------------------------------------------------------------------------------
+
+Version 1.0 provides a complete reference implementation.
+
+The implementation demonstrates
+
+AI Agent
+
+↓
+
+Tool Calling
+
+↓
+
+Business API
+
+↓
+
+Enterprise Services
+
+The reference implementation is designed
+to serve as a foundation for enterprise projects.
+
+-------------------------------------------------------------------------------
+
+8. Future Evolution
+-------------------------------------------------------------------------------
+
+Future versions may include
+
+MCP
+
+Multi-Agent Collaboration
+
+RAG Pipelines
+
+Developer Hub Integration
+
+GitHub Copilot Integration
+
+AI Governance
+
+Knowledge Graph
+
+Advanced Workflow
+
+Autonomous Operations
+
+Model Router
+
+Agent Marketplace
+
+-------------------------------------------------------------------------------
+
+9. Summary
+-------------------------------------------------------------------------------
+
+Enterprise AI is not another application.
+
+Enterprise AI is a platform.
+
+By separating AI reasoning,
+business logic,
+metadata,
+and enterprise services,
+
+organizations can safely adopt AI
+without sacrificing maintainability,
+governance,
+or scalability.
+
+This reference architecture provides
+a practical blueprint
+for building production-grade
+Enterprise AI Agent Platforms
+on Red Hat OpenShift AI.
