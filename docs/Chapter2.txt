@@ -1,0 +1,471 @@
+===============================================================================
+Enterprise AI Agent Platform
+Reference Architecture
+for OpenShift AI
+
+Version 1.0
+
+Chapter 1
+
+Vision
+===============================================================================
+
+
+1. Why Enterprise AI Agent Platform?
+-------------------------------------------------------------------------------
+
+The rapid evolution of Large Language Models (LLMs) has enabled enterprises
+to build conversational AI applications faster than ever before.
+
+Many organizations have introduced AI assistants to improve productivity,
+automate customer support, generate software code, and assist employees in
+daily operations.
+
+However, most AI initiatives remain isolated experiments.
+
+Typical implementations expose a chat interface connected directly to an LLM,
+where prompts contain business rules, application logic, and integration
+knowledge.
+
+Although this approach enables rapid prototyping, it introduces significant
+long-term challenges.
+
+Business rules become embedded inside prompts.
+
+Enterprise integrations become tightly coupled to AI implementations.
+
+Metadata is duplicated across multiple applications.
+
+Governance becomes difficult.
+
+Testing becomes nearly impossible.
+
+Replacing one AI model often requires redesigning the entire application.
+
+These limitations prevent AI from becoming an enterprise platform capability.
+
+
+-------------------------------------------------------------------------------
+
+2. The Problem We Are Trying to Solve
+-------------------------------------------------------------------------------
+
+Enterprise systems already contain valuable business assets.
+
+Business services
+
+Enterprise APIs
+
+Master data
+
+Business rules
+
+Metadata
+
+Identity management
+
+Monitoring
+
+Audit logs
+
+Event platforms
+
+These capabilities already exist.
+
+AI should not replace them.
+
+Instead, AI should intelligently orchestrate them.
+
+The goal is therefore not to create another application.
+
+The goal is to create a reusable AI platform capable of interacting with
+existing enterprise services while preserving governance,
+security, and maintainability.
+
+
+-------------------------------------------------------------------------------
+
+3. The Platform Vision
+-------------------------------------------------------------------------------
+
+The Enterprise AI Agent Platform introduces AI as a platform capability.
+
+Instead of implementing intelligence inside every application,
+intelligence is centralized into reusable AI Agents.
+
+Applications no longer integrate directly with LLMs.
+
+Instead, applications expose business capabilities through APIs.
+
+AI Agents consume those APIs through standardized Tool Calling.
+
+This creates a clean separation of responsibilities.
+
+Users interact with AI.
+
+AI performs reasoning.
+
+Tools invoke enterprise capabilities.
+
+Business Services execute business logic.
+
+Enterprise Platforms provide operational capabilities.
+
+Every layer has a clearly defined responsibility.
+
+
+-------------------------------------------------------------------------------
+
+4. AI is NOT Business Logic
+-------------------------------------------------------------------------------
+
+One of the most important principles of this architecture is the separation
+between reasoning and execution.
+
+AI is responsible for understanding requests,
+planning actions,
+collecting missing information,
+and deciding which enterprise capability should be invoked.
+
+AI is never responsible for executing business logic.
+
+Business logic belongs to Business Services.
+
+Examples include
+
+validation
+
+approval
+
+pricing
+
+inventory control
+
+transaction processing
+
+regulatory compliance
+
+Those responsibilities remain inside enterprise applications.
+
+This architecture intentionally avoids embedding business rules into prompts.
+
+
+-------------------------------------------------------------------------------
+
+5. Metadata is a Strategic Enterprise Asset
+-------------------------------------------------------------------------------
+
+Modern enterprises continuously create metadata.
+
+Database schemas
+
+Business glossary
+
+Ownership
+
+Domains
+
+Data lineage
+
+Data quality rules
+
+API definitions
+
+Traditional AI applications often duplicate this information inside prompts.
+
+This architecture rejects that approach.
+
+Metadata shall remain externalized.
+
+OpenMetadata acts as the enterprise metadata catalog.
+
+AI retrieves metadata when required.
+
+Metadata is never copied into the AI application.
+
+This ensures consistency,
+governance,
+and maintainability.
+
+
+-------------------------------------------------------------------------------
+
+6. Tool First Architecture
+-------------------------------------------------------------------------------
+
+Enterprise systems expose capabilities.
+
+AI should never directly communicate with databases,
+Kubernetes,
+or enterprise applications.
+
+Instead,
+every enterprise capability is represented as a Tool.
+
+Examples include
+
+OpenMetadata Tool
+
+Customer Tool
+
+Order Tool
+
+Inventory Tool
+
+Git Tool
+
+OpenShift Tool
+
+Developer Hub Tool
+
+Kafka Tool
+
+Filesystem Tool
+
+Search Tool
+
+An AI Agent only understands Tools.
+
+The implementation details remain hidden.
+
+This abstraction simplifies testing,
+security,
+and future extensibility.
+
+
+-------------------------------------------------------------------------------
+
+7. Multi-Agent by Design
+-------------------------------------------------------------------------------
+
+Enterprise AI cannot rely on a single intelligent agent.
+
+Different responsibilities require different expertise.
+
+The platform therefore assumes multiple specialized Agents.
+
+Example Agents
+
+Schema Agent
+
+Registration Agent
+
+Validation Agent
+
+Search Agent
+
+Planning Agent
+
+Workflow Agent
+
+Coding Agent
+
+Operations Agent
+
+Governance Agent
+
+Future projects can introduce additional Agents without changing the
+overall platform architecture.
+
+
+-------------------------------------------------------------------------------
+
+8. OpenShift AI as the Enterprise AI Platform
+-------------------------------------------------------------------------------
+
+OpenShift AI provides the enterprise runtime environment.
+
+The platform offers
+
+Model Serving
+
+GPU Scheduling
+
+Notebook Environments
+
+Model Registry
+
+Pipelines
+
+Authentication
+
+Monitoring
+
+Scalable Kubernetes infrastructure
+
+This architecture assumes OpenShift AI as the execution platform for
+all AI workloads.
+
+Business Services remain independently deployable
+using standard OpenShift deployment patterns.
+
+
+-------------------------------------------------------------------------------
+
+9. Cloud Native First
+-------------------------------------------------------------------------------
+
+Every component follows cloud-native principles.
+
+Stateless services
+
+Horizontal scalability
+
+Containerized workloads
+
+Health checks
+
+Observability
+
+GitOps deployment
+
+OpenAPI
+
+OpenTelemetry
+
+Independent deployments
+
+No component requires shared local state.
+
+Every service can be deployed independently.
+
+
+-------------------------------------------------------------------------------
+
+10. Open Standards First
+-------------------------------------------------------------------------------
+
+The platform intentionally avoids proprietary interfaces whenever possible.
+
+Preferred standards include
+
+REST
+
+OpenAPI
+
+OIDC
+
+OAuth2
+
+OpenTelemetry
+
+OCI Containers
+
+Helm
+
+Kubernetes
+
+CloudEvents
+
+Metadata standards
+
+Future support for MCP (Model Context Protocol) is expected,
+but Version 1.0 does not require MCP.
+
+
+-------------------------------------------------------------------------------
+
+11. Target Reference Implementation
+-------------------------------------------------------------------------------
+
+The Version 1.0 reference implementation consists of
+
+OpenShift AI
+
+IBM Granite
+
+vLLM
+
+LangGraph
+
+OpenMetadata
+
+Quarkus
+
+PostgreSQL
+
+Keycloak
+
+OpenTelemetry
+
+Prometheus
+
+Grafana
+
+Helm
+
+Tekton
+
+These technologies provide a complete enterprise-ready foundation
+without introducing unnecessary complexity.
+
+
+-------------------------------------------------------------------------------
+
+12. Success Criteria
+-------------------------------------------------------------------------------
+
+A successful Enterprise AI Agent Platform should satisfy the following goals.
+
+AI can be replaced without changing business services.
+
+Business Services can evolve independently from AI.
+
+Metadata remains centralized.
+
+Every enterprise capability is accessible through Tools.
+
+New Agents can be added without architectural changes.
+
+Multiple LLMs can coexist.
+
+Deployment remains cloud native.
+
+Security remains centralized.
+
+Observability is built into every component.
+
+The platform supports enterprise governance from the beginning.
+
+
+-------------------------------------------------------------------------------
+
+13. Vision Statement
+-------------------------------------------------------------------------------
+
+Enterprise AI is no longer another application.
+
+Enterprise AI becomes part of the enterprise platform.
+
+AI Agents reason.
+
+Tools connect.
+
+Business Services execute.
+
+Metadata informs.
+
+OpenShift operates.
+
+Together these components provide a reusable,
+secure,
+governed,
+and scalable Enterprise AI Agent Platform capable of supporting
+the next generation of enterprise applications.
+
+
+===============================================================================
+
+Architecture Principles Summary
+
+===============================================================================
+
+This chapter introduced the motivation behind the Enterprise AI Agent Platform.
+
+The following principles guide every architectural decision described in
+this reference architecture.
+
+These principles should be considered mandatory unless explicitly stated
+otherwise.
+
+The following chapter defines each principle in detail.
