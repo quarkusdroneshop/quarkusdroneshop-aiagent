@@ -1,0 +1,373 @@
+===========================================================
+AI Schema Driven Registration Platform
+Architecture Design
+Version : 1.0
+===========================================================
+
+
+1. Purpose
+-----------------------------------------------------------
+
+本システムはAI Agentを利用して自然言語によるデータ登録を実現する。
+
+AI AgentはOpenMetadataからメタデータを取得し、
+対象データのスキーマやビジネスルールを理解する。
+
+不足している項目は利用者へ対話形式で問い合わせる。
+
+必要な情報が揃ったらBusiness APIへデータ登録を依頼する。
+
+Business APIはQuarkusで実装し、
+業務ロジック、トランザクション、永続化を担当する。
+
+
+===========================================================
+Architecture
+===========================================================
+
+
+                +---------------------+
+                |      User           |
+                +----------+----------+
+                           |
+                      Chat Interface
+                           |
+                           v
+
+               +------------------------+
+               |      OpenShift AI      |
+               |                        |
+               |  LangGraph AI Agent    |
+               +-----------+------------+
+                           |
+          +----------------+----------------+
+          |                                 |
+          |                                 |
+          v                                 v
+
+ +---------------------+         +------------------------+
+ | OpenMetadata Tool   |         | Business Tool          |
+ +----------+----------+         +-----------+------------+
+            |                                  |
+            | REST API                         | REST API
+            |                                  |
+            v                                  v
+
+ +---------------------+         +-------------------------+
+ | OpenMetadata        |         | Quarkus Business API    |
+ +---------------------+         +------------+------------+
+                                              |
+                    +-------------------------+------------------------+
+                    |                                                  |
+                    |                                                  |
+                    v                                                  v
+
+             PostgreSQL                                         Kafka(Optional)
+
+
+
+===========================================================
+Responsibilities
+===========================================================
+
+AI Agent
+
+Responsibilities
+
+- User interaction
+- Natural language understanding
+- Schema lookup
+- Required field detection
+- Data type validation
+- Business rule confirmation
+- Business API invocation
+
+AI Agent must NOT
+
+- Execute SQL
+- Access database directly
+- Execute business logic
+- Maintain transactions
+
+
+
+-----------------------------------------------------------
+
+OpenMetadata
+
+Responsibilities
+
+- Table definitions
+- Column definitions
+- Business glossary
+- Domains
+- Owners
+- Data quality rules
+- Required columns
+- Descriptions
+
+OpenMetadata is the single source of truth for metadata.
+
+
+-----------------------------------------------------------
+
+Business API (Quarkus)
+
+Responsibilities
+
+- REST API
+- Bean Validation
+- Business validation
+- Transaction management
+- Persistence
+- Audit logging
+- Authorization
+- Event publishing
+
+Business API must NOT
+
+- Call LLM
+- Implement AI logic
+- Interpret natural language
+
+
+
+===========================================================
+Registration Flow
+===========================================================
+
+
+Step 1
+
+User
+
+Register a new customer.
+
+
+↓
+
+Step 2
+
+AI Agent
+
+Search OpenMetadata.
+
+↓
+
+Step 3
+
+Retrieve Customer schema.
+
+↓
+
+Customer
+
+customerId
+companyName
+contactName
+email
+address
+
+↓
+
+Step 4
+
+Determine required fields.
+
+↓
+
+Step 5
+
+Ask user for missing information.
+
+↓
+
+Step 6
+
+Generate JSON.
+
+↓
+
+POST /customers
+
+↓
+
+Step 7
+
+Business API
+
+Validate request.
+
+↓
+
+Persist data.
+
+↓
+
+Publish event (optional).
+
+↓
+
+Return success.
+
+
+
+===========================================================
+REST API
+===========================================================
+
+POST /customers
+
+Request
+
+{
+    "companyName":"",
+    "contactName":"",
+    "email":"",
+    "address":""
+}
+
+
+Response
+
+201 Created
+
+
+-----------------------------------------------------------
+
+GET /customers/{id}
+
+-----------------------------------------------------------
+
+PUT /customers/{id}
+
+-----------------------------------------------------------
+
+DELETE /customers/{id}
+
+
+
+===========================================================
+OpenMetadata Usage
+===========================================================
+
+AI Agent can retrieve
+
+- Table
+- Columns
+- Data Types
+- Descriptions
+- Business Glossary
+- Domains
+- Owners
+- Tags
+- Required Columns
+- Data Quality Rules
+
+AI Agent must never cache metadata permanently.
+
+Metadata should always be obtained from OpenMetadata.
+
+
+
+===========================================================
+Tool Definitions
+===========================================================
+
+OpenMetadata Tool
+
+searchTable()
+
+getSchema()
+
+getRequiredColumns()
+
+getBusinessGlossary()
+
+getDomain()
+
+getValidationRules()
+
+
+-----------------------------------------------------------
+
+Business Tool
+
+createCustomer()
+
+updateCustomer()
+
+deleteCustomer()
+
+searchCustomer()
+
+
+
+===========================================================
+Validation Strategy
+===========================================================
+
+AI Agent
+
+- Input assistance
+- Interactive validation
+- Missing field detection
+- Business explanation
+
+Quarkus
+
+- Bean Validation
+- Business validation
+- Transaction
+- Persistence
+
+
+AI validation improves user experience.
+
+Quarkus validation guarantees correctness.
+
+
+
+===========================================================
+Future Extensions
+===========================================================
+
+Future features
+
+- CSV Import
+- Excel Import
+- OCR
+- PDF Parsing
+- MCP Support
+- Human Approval
+- Workflow Engine
+- Kafka Event Streaming
+- Multi Domain Registration
+- Data Quality Validation
+- RAG
+- Knowledge Graph
+
+
+===========================================================
+Design Principles
+===========================================================
+
+1. OpenMetadata manages metadata.
+
+2. AI Agent performs reasoning.
+
+3. Quarkus executes business logic.
+
+4. Database is accessed only through Business API.
+
+5. AI Agent never executes SQL.
+
+6. Metadata is never duplicated.
+
+7. Business rules belong to Business API.
+
+8. AI is stateless.
+
+9. Components communicate through REST APIs.
+
+10. The architecture must remain cloud-native and deployable on OpenShift.
