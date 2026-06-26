@@ -469,3 +469,213 @@ These principles should be considered mandatory unless explicitly stated
 otherwise.
 
 The following chapter defines each principle in detail.
+
+
+
+1. システム概要
+利用者は自然言語でデータ登録を依頼する。
+
+AI AgentはOpenMetadataから対象スキーマを取得し、
+不足項目を対話形式で収集する。
+
+必要な情報が揃ったら、
+Quarkus Business APIへ登録要求を送信する。
+
+Quarkusは業務バリデーション、
+トランザクション管理、
+データ永続化を担当する。
+
+OpenMetadataはシステム全体のメタデータ管理基盤として利用する。
+
+2. システム構成
+                     +----------------------+
+                     |      利用者           |
+                     +----------+-----------+
+                                |
+                           Chat UI
+                                |
+                                v
+                    +----------------------+
+                    |    OpenShift AI      |
+                    |  LangGraph Agent     |
+                    +----------+-----------+
+                               |
+                +--------------+--------------+
+                |                             |
+                |                             |
+      OpenMetadata Tool              Business Tool
+                |                             |
+                | REST API                    | REST API
+                |                             |
+                v                             v
+       +----------------+          +---------------------+
+       | OpenMetadata   |          | Quarkus Business API|
+       +----------------+          +----------+----------+
+                                              |
+                           +------------------+------------------+
+                           |                                     |
+                           |                                     |
+                     PostgreSQL                             Kafka(Event)
+
+
+3. コンポーネント責務
+
+AI Agent
+
+責務
+
+* ユーザーとの対話
+* スキーマ取得
+* 必須項目判定
+* データ型チェック
+* Business API呼び出し
+
+保持しないもの
+
+* SQL
+* 業務ロジック
+* DB接続
+* トランザクション
+
+OpenMetadata
+
+責務
+
+* テーブル定義
+* カラム情報
+* 必須項目
+* ビジネス用語
+* データ品質ルール
+* ドメイン情報
+
+Quarkus
+
+責務
+
+* REST API
+* Bean Validation
+* JPA
+* トランザクション
+* 永続化
+* 監査ログ
+* 権限管理
+
+AI固有処理は持たない。
+
+ユーザー
+
+「顧客を登録して」
+
+↓
+
+AI
+
+OpenMetadata検索
+
+↓
+
+Customerスキーマ取得
+
+↓
+
+必須項目取得
+
+↓
+
+不足項目確認
+
+↓
+
+利用者回答
+
+↓
+
+JSON生成
+
+↓
+
+POST /customers
+
+↓
+
+Quarkus
+
+↓
+
+DB登録
+
+↓
+
+登録完了
+
+
+5. OpenMetadata利用方法
+AI AgentはOpenMetadata REST APIを利用する。
+取得対象
+
+Table
+Column
+Description
+Glossary
+Tags
+Owner
+Domain
+Data Quality Rule
+
+6. Quarkus API
+
+POST /customers
+GET /customers/{id}
+PUT /customers/{id}
+DELETE /customers/{id}
+
+{
+  "companyName": "",
+  "contactName": "",
+  "email": "",
+  "address": ""
+}
+
+7. AI Tool一覧
+OpenMetadata Tool
+
+searchTable()
+getSchema()
+getGlossary()
+getBusinessRule()
+getRequiredColumns()
+
+Business Tool
+
+createCustomer()
+updateCustomer()
+searchCustomer()
+deleteCustomer()
+
+8. 非機能要件
+
+AIは
+
+* DBへ直接アクセスしない
+* SQLを生成しない
+* Business APIのみ呼び出す
+
+Quarkusは
+
+* REST APIのみ公開する
+* トランザクションを保証する
+* Bean Validationを実施する
+
+9. 将来拡張
+
+将来的に以下へ対応可能
+
+* CSV登録
+* Excel登録
+* PDF解析
+* OCR
+* MCP Server対応
+* Workflow Engine連携
+* Human Approval
+* Kafkaイベント通知
+* データ品質チェック
