@@ -1,0 +1,19 @@
+1 AI Performs Reasoning
+
+2 Tool First
+
+3 Metadata First
+
+4 API First
+
+5 Stateless Agents
+
+6 Workflow Before Prompt
+
+7 Cloud Native
+
+8 Security by Default
+
+9 Observable by Default
+
+10 Model Agnostic
